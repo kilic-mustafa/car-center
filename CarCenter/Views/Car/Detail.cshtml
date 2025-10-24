@@ -1,0 +1,95 @@
+@model CarModel 
+@{
+    ViewData["Title"] = "Car Detail";
+    var success = ViewBag.Success as string;
+    CarModel? c = Model;
+
+}
+<h1>Car Details</h1>
+
+@if (!string.IsNullOrWhiteSpace(success))
+{
+    <div class="alert alert-success">@success</div>
+}
+
+@if (Model == null)
+{
+    <p>@ViewBag.Message</p>
+}
+else
+{
+    <div class="col-md-5">
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <th style="width: 35%">Id</th>
+                    <td>@c.Id</td>
+                </tr>
+                <tr>
+                    <th>Brand</th>
+                    <td>@c.Brand</td>
+                </tr>
+                <tr>
+                    <th>Model</th>
+                    <td>@c.Model</td>
+                </tr>
+                <tr>
+                    <th>Year</th>
+                    <td>@c.Year</td>
+                </tr>
+                <tr>
+                    <th>Kilometers</th>
+                    <td>@c.Kilometers</td>
+                </tr>  
+                <tr>
+                    <th>Price</th>
+                    <td>@c.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</td>
+                </tr>
+                <tr>
+                    <th>Colour</th>
+                    <td>@c.Colour</td>
+                </tr>
+                <tr>
+                    <th>Fuel Type</th>
+                    <td>@c.FuelType</td>
+                </tr>           
+                <tr>
+                    <th>Gear Type</th>
+                    <td>@c.GearType</td>
+                </tr>
+                <tr>
+                    <th>Engine Power</th>
+                    <td>@c.EnginePower</td>
+                </tr>
+                <tr>
+                    <th>Engine Displacement</th>
+                    <td>@c.EngineDisplacement</td>
+                </tr>
+                <tr>
+                    <th>Traction</th>
+                    <td>@c.Traction</td>
+                </tr>
+                <tr>
+                    <th>Vehicle Type</th>
+                    <td>@c.VehicleType</td>
+                </tr>
+                <tr>
+                    <th>Number of Doors</th>
+                    <td>@c.NumberOfDoors</td>
+                </tr>
+                <tr>
+                    <th>Registration Date</th>
+                    <td>@(c.RegistrationDate?.ToString(format: "dd/MM/yyyy") ?? "-")</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="col-12">
+            <a asp-controller="Car" asp-action="Update" asp-route-id="@c.Id" class="btn btn-warning">Update</a>
+                <form asp-controller="Car" asp-action="Delete" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@c.Id" />
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this car?')">Delete</button>
+                </form>
+            <a asp-controller="Car" asp-action="List" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+}

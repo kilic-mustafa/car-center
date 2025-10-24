@@ -1,0 +1,58 @@
+@model List<CarModel>
+@{
+    ViewData["Title"] = "Car List";
+    var success = ViewBag.Success as string;
+}
+
+<h1>Car List</h1>
+
+@if (!string.IsNullOrWhiteSpace(success))
+{
+    <div class="alert alert-success">@success</div>
+}
+
+@if (Model == null || Model.Count == 0)
+{
+    <p>No cars found!</p>
+    <a asp-controller="Car" asp-action="Create" class="btn btn-primary">Add New Car</a>
+}
+else
+{
+    <a asp-controller="Car" asp-action="Create" class="btn btn-primary mb-3">Add New Car</a>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Kilometers</th>
+                <th>Price</th>
+                <th>Registration Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead> 
+        <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Id</td>
+                <td>@c.Brand</td>
+                <td>@c.Model</td>
+                <td>@c.Year</td>
+                <td>@c.Kilometers</td>
+                <td>@c.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</td>
+                <td>@(c.RegistrationDate?.ToString("dd/MM/yyyy") ?? "-")</td>
+                <td>
+                    <a asp-controller="Car" asp-action="Detail" asp-route-id="@c.Id" class="btn btn-info btn-sm me-2">Detail</a>
+                    <a asp-controller="Car" asp-action="Update" asp-route-id="@c.Id" class="btn btn-warning btn-sm me-2">Update</a>
+                    <form asp-controller="Car" asp-action="Delete" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@c.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this car?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+} 
